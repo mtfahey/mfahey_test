@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.grid line{
+  stroke: #F8F8F8;
+  stroke: none;
+}
+
+.domain {
+  display: none;
+}
+
+.names {
+  font: 17px;
+}
+
+.titleBox {
+  stroke: black;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  display: none;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font: 8px sans-serif;
+  stroke: white;
+}
+
+.cells path {
+  fill: none;
+  pointer-events: all;
+}
+
+.cells :hover circle {
+  fill: red;
+
+}
+
+.jobs :hover {
+  fill: black;
+}
+
+.bar {
+  opacity: 0.2;
+}
+
+
+
+
+html {
+             height: 100%;
+         }
+         body {
+             background-color: white;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             min-height: 100%;
+             color: white;
+             overflow: hidden;
+         }
+
+         main {
+             text-align: center;
+         }
+
+         h1 {
+             font-family: sans-serif;
+             font-size: 4em;
+             font-weight: bold;
+             color: black;
+             margin: 0;
+         }
+
+         h2 {
+             font-size: 1.2em;
+             font-weight: regular;
+             margin: 0;
+             background-color: white;
+             color: black;
+             padding: 5px;
+
+             font-family: monospace;
+         }
+
+         .optionclick:hover{
+          color: red;
+          display: inline-block;
+          
+          -webkit-transform: scale(1.05);
+          -ms-transform: scale(1.05);
+          transform: scale(1.05);
+
+         }
+
+         ul {
+             padding: 0;
+             display: flex;
+             justify-content: space-between;
+         }
+
+         a {
+             color: white;
+             transition: all .2s ease-in-out;
+         }
+
+
+         #messageOne {
+          color: black;
+          text-align: left;
+
+         }
+
+         #messageSpace {
+          height: 20px;
+
+         }
+
+
+</style>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html> 
+
+    <body>
+        <main>
+            <h1>Mark Fahey</h1>
+            <h2>Data reporting / graphics / investigations</h2>
+ <!--            <span class="optionclick" id="buttonOne">[data & investigations]</span>  -->
+            <h2><span class="optionclick">[get contact information]</span> <span class="optionclick">[learn about this graphic]</span> </h2>
+            <div id="messageSpace">
+            <div id="messageOne" ></div>
+            </div>
+            <svg width="500" height="350"></svg>
+
+
+        </main>
+        <script>
+         window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+         ga('create','UA-68057-5','auto');
+         ga('send','pageview')
+        </script>
+        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+    </body>
+
+
+</html>
+
+
+
+<script>
+
+
+
+function JSDate(excelDate){
+  return new Date((excelDate - (25567 + 1))*86400*1000);
+}
+
+var someColors = ["#e31a1c", "#54278f","#006d2c", "#d94801"];
+var color = d3.scaleOrdinal(someColors);
+
+
+
+
+var svg = d3.select("svg"),
+    margin = {top: 50, right: 2, bottom: 40, left: 2},
+    width = svg.attr("width") - margin.left - margin.right,
+    height = svg.attr("height") - margin.top - margin.bottom;
+
+var gBox = svg.append("g")
+
+
+  // var titleBox = gBox.append("rect")
+  // .attr("class", "titleBox")
+  //     .attr("x", 40)
+  //     .attr("y", 20)
+  //     .attr("width", 0)
+  //     .attr("height", 50)
+  //     .attr("fill", "white");
+
+  // gBox.append("text").text("Click on the outlined circles below to view clips.")
+  // .attr("class", "titleBox")
+  //     .attr("x", 23)
+  //     .attr("y", 20)
+  //     .attr("fill", "black")
+  //     .attr("font-family", "monospace")
+  //     .attr("font-size","13px")
+  //     .attr("text-anchor", "left");
+
+
+
+
+//background
+// svg.append("rect")
+//     .attr("width", "100%")
+//     .attr("height", "100%")
+//     .attr("fill", "#E0E0E0");
+
+
+var x = d3.scaleTime()
+  .domain([new Date(2011,0,1), new Date(2018,6,12)])
+    .rangeRound([0, width]);
+
+var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+d3.csv("data2.csv", type, function(error, data) {
+  if (error) throw error;
+
+  //x.domain(d3.extent(data, function(d) { return JSDate(d.value); }));
+//x.domain(d3.extent(data, function(d) { return JSDate(d.value); }));
+
+
+  g.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height+ ")")
+      .call(d3.axisBottom(x).ticks(d3.timeYear.every(1)).tickFormat(d3.timeFormat("%Y")).tickSize(0));
+
+//Add gridlines with a new axis
+  g.append("g")
+    .attr("class", "grid")
+    .call(d3.axisTop(x).tickFormat("")
+                    .tickSize(-height+10)
+                    .tickSizeOuter(0)
+                    .tickValues([new Date(2011,0,1), new Date(2012,0,1), new Date(2013,0,1), new Date(2014,0,1), new Date(2015,0,1), new Date(2016,0,1), new Date(2017,0,1), new Date(2018,0,1)])
+                    );
+
+
+  var simulation = d3.forceSimulation(data)
+      .force("x", d3.forceX(function(d) { return x(JSDate(d.value)); }).strength(3))
+      .force("y", d3.forceY(height / 2))
+      .force("collide", d3.forceCollide(function(d) {return Math.sqrt(d.words/20)+1;}).iterations(4))
+      .stop();
+
+  
+  for (var i = 0; i < 120; ++i) simulation.tick();
+
+//   var barData = [{"name":"Scripps investigations","start":42887,"end":43324,"fill":"#17becf"},
+// {"name":"CNBC","start":42095,"end":42887,"fill":"#1f77b4"},
+// {"name":"CNNMoney","start":42036,"end":42093,"fill":"#ff7f0e"},
+// {"name":"WSJ","start":41821,"end":41944,"fill":"#9467bd"},
+// {"name":"Crains New York","start":41791,"end":41850,"fill":"#e377c2"},
+// {"name":"CUNY","start":41456,"end":42064,"fill":"red"},
+// {"name":"Record-Herald","start":41214,"end":41487,"fill":"blue"},
+// {"name":"News-Sun","start":41122,"end":41214,"fill":"green"},
+// {"name":"Clarion","start":40787,"end":41122,"fill":"orange"},
+// {"name":"Chiang Mai Citylife","start":40603,"end":40664,"fill":"purple"}];
+
+//   var rectangle = g.append("g")
+//     .attr("class", "jobs")
+//     .selectAll("rect").data(barData).enter().append("rect")
+//     .attr("class", "bar")
+//         .attr("x", function(d) {return x(JSDate(d.start));})
+//         .attr("width", function(d) {return x(JSDate(d.end))-x(JSDate(d.start));})
+//         .attr("y", height*0.04)
+//         .attr("height", 350)
+//         .attr("fill", "white");
+
+  // var names = g.append("g")
+  //  .attr("class", "names")
+  //  .selectAll("text").data(barData).enter()
+  //   .append("text")
+  //   .text(function(d) { return d.name; })
+  //   .attr("y", height*0.04)
+  //   .attr("dy", ".35em")
+  //   .style('fill', function(d) { return d.fill; })
+  //   .attr("x", function(d) {return x(JSDate(d.start));});
+
+
+  var cell = g.append("g")
+      .attr("class", "cells")
+    .selectAll("g").data(data).enter().append("g")
+    .append("a");
+        // .attr("xlink:href", function(d) {return d.link;});
+
+
+  cell.append("circle")
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; })
+        .attr("fill", function(d) {return color(d.domain);})
+        .attr("stroke", "black")
+        .attr("stroke-width", function(d) { return d.feature;})
+        .attr("r", 0);
+
+  cell.selectAll('circle')
+        .transition()
+        .duration(2000)
+        .attr("r", function(d) { return Math.sqrt(d.words/20); });
+
+  d3.selectAll("circle").on("click", function() {
+            d3.selectAll(".titleBox")
+            .transition()
+            .duration(100)
+              .attr("width", 0)
+            .transition()
+            .duration(200)
+              .attr("width", 500)
+        });
+
+// d3.select(this).attr("cy")
+      
+
+  cell.append("path")
+      .attr("d", function(d) { return "M" + d.join("L") + "Z"; });
+
+
+
+  cell.append("title")
+      .text(function(d) { return d.data.name; });
+
+
+
+
+
+
+
+
+
+});
+
+
+
+ 
+
+
+function type(d) {
+  if (!d.value) return;
+  d.value = +d.value;
+  return d;
+}
+
+</script>
+
+
+<script>
+
+$('#buttonOne').click(function() {
+  $('#existingText').remove();
+  var el = $("<div />").css("display", "none").attr('id', 'existingText').text("New Text")
+    $("#messageOne").append(el);
+    el.slideDown(1000);
+});
+
+</script>
+
+
