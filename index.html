@@ -201,9 +201,16 @@ var arc = d3.arc()
 var gBox = d3.select("#gBox");
 
 width = $('#gBox')[0].getBoundingClientRect().width;
-width = $('#gBox')[0].getBoundingClientRect().height;
+width = +width
+adjustRad = +innerRad + 25
+console.log(width); 
+arcPerc = +arcPerc
 
-g = gBox.append("g").attr("transform", "translate(" + width + "," + innerRad+5 + ")");
+
+g = gBox.append("g").attr("transform", "translate(" + width +  "," + adjustRad +  ")");
+
+
+
 
 
 
@@ -215,17 +222,20 @@ g = gBox.append("g").attr("transform", "translate(" + width + "," + innerRad+5 +
 
 // Add the foreground arc in orange, currently showing 12.7%.
 var foreground = g.append("path")
-    .datum({endAngle: 12.7 * tau})
+    .datum({endAngle: 0 * tau})
     .style("fill", "orange")
-    .attr("d", arc);
+    .attr("d", arc); 
+
+//FIGURE OUT HOW TO APPEND ARROWHEAD MARKERS HERE
+  
 
 // Every so often, start a transition to a new random angle. The attrTween
 // definition is encapsulated in a separate function (a closure) below.
-d3.interval(function() {
   foreground.transition()
-      .duration(750)
-      .attrTween("d", arcTween(Math.random() * tau));
-}, 1500);
+      .duration(300)
+      .attrTween("d", arcTween(arcPerc * tau));
+
+
 
 // Returns a tween for a transition’s "d" attribute, transitioning any selected
 // arcs from their current angle to the specified new angle.
@@ -477,6 +487,7 @@ $('#buttonOne').click(function() {
 
   var gBox = svg.append("g")
           .attr("id", "gBox")
+          .attr("y", 40);
 
   // gBox.append("rect")
   //   .attr("id", "rectBox")
@@ -489,19 +500,19 @@ $('#buttonOne').click(function() {
 var data = [{
     "height": 110,
     "text": "Each circle represents a story. The radius represents word count.",
-    "width": 150
+    "width": 180
   }];
 
   new d3plus.TextBox()
     .data(data)
     .id("textItself")
-    .fontSize(15)
+    .fontSize(14)
     .select("#gBox")
     .fontFamily("monospace")
     .render();
 
 
-  makeArc(30,34,0, 12.7)  
+  makeArc(60,62,0, 0.127)  
 
   // setTimeout(function(){
   //   svg.selectAll("#gBox").remove()
