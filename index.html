@@ -156,7 +156,7 @@ html {
             <h1>Mark Fahey</h1>
             <h2>Data reporting / graphics / investigations</h2>
  <!--            <span class="optionclick" id="buttonOne">[data & investigations]</span>  -->
-            <h2><span class="optionclick" >[get contact information]</span> <span class="optionclick" id="buttonOne">[learn about this graphic]</span> </h2>
+            <h2><span class="optionclick" >[get contact information]</span> OR <span class="optionclick" id="buttonOne">[learn about this graphic]</span> </h2>
             <div id="messageSpace">
             <div id="messageOne" ></div>
             </div>
@@ -499,7 +499,7 @@ $('#buttonOne').click(function() {
 
 var data = [{
     "height": 110,
-    "text": "Each circle represents a story. The radius represents word count.",
+    "text": "1. Each circle represents a story. The radius represents the word count.",
     "width": 180
   }];
 
@@ -514,9 +514,9 @@ var data = [{
 
   makeArc(60,62,0, 0.127)  
 
-  // setTimeout(function(){
-  //   svg.selectAll("#gBox").remove()
-  // }, 3000);
+  setTimeout(function(){
+    svg.selectAll("#gBox").remove()
+  }, 4000);
 
 
   }, 10);
