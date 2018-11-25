@@ -4,7 +4,7 @@
 
 .grid line{
   stroke: #F8F8F8;
-  stroke: none;
+  display: none;
 }
 
 .domain {
@@ -27,8 +27,7 @@
 }
 
 .axis text {
-  font: 8px sans-serif;
-  stroke: white;
+  font: 10px monospace;
 }
 
 .cells path {
@@ -160,7 +159,7 @@ html {
             <div id="messageSpace">
             <div id="messageOne" ></div>
             </div>
-            <svg width="500" height="350"></svg>
+            <svg width="500" height="400"></svg>
 
 
         </main>
@@ -307,7 +306,7 @@ var color = d3.scaleOrdinal(someColors);
 
 
 var svg = d3.select("svg"),
-    margin = {top: 50, right: 2, bottom: 40, left: 2},
+    margin = {top: 30, right: 8, bottom: 40, left: 10},
     width = svg.attr("width") - margin.left - margin.right,
     height = svg.attr("height") - margin.top - margin.bottom;
 
@@ -359,6 +358,7 @@ d3.csv("data2.csv", type, function(error, data) {
 
   g.append("g")
       .attr("class", "axis axis--x")
+      .attr("stroke", "white")
       .attr("transform", "translate(0," + height+ ")")
       .call(d3.axisBottom(x).ticks(d3.timeYear.every(1)).tickFormat(d3.timeFormat("%Y")).tickSize(0));
 
@@ -482,20 +482,12 @@ function type(d) {
 
 $('#buttonOne').click(function() {
 
-
+//Message number one...
  setTimeout(function(){ 
 
   var gBox = svg.append("g")
           .attr("id", "gBox")
           .attr("y", 40);
-
-  // gBox.append("rect")
-  //   .attr("id", "rectBox")
-  //   .attr("class", "shape")
-  //   .attr("x", 40)
-  //   .attr("y", 100)
-  //   .attr("width", "50px")
-  //   .attr("height", "50px"); 
 
 var data = [{
     "height": 110,
@@ -514,9 +506,43 @@ var data = [{
 
   makeArc(60,62,0, 0.127)  
 
+
+
+//Message Number 2
+
   setTimeout(function(){
-    svg.selectAll("#gBox").remove()
-  }, 4000);
+    svg.selectAll("#gBox").remove();
+
+    var gBox = svg.append("g")
+    .attr("id", "gBox")
+    .attr("transform", function translate(d) {
+  return "translate(0," + 300 + ")";
+});
+
+
+    var data = [{
+    "height": 110,
+    "text": "2. The stories are laid out by publication date.",
+    "width": 180
+  }];
+
+    new d3plus.TextBox()
+      .data(data)
+      .id("textItself")
+      .fontSize(14)
+      .select("#gBox")
+      .fontFamily("monospace")
+      .render();
+
+    axis = d3.select(".axis");
+
+    axis.attr("stroke", "black");
+
+
+
+  }, 2000);
+
+
 
 
   }, 10);
@@ -540,5 +566,4 @@ var data = [{
 });
 
 </script>
-
 
