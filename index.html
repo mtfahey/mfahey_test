@@ -306,7 +306,7 @@ var color = d3.scaleOrdinal(someColors);
 
 
 var svg = d3.select("svg"),
-    margin = {top: 30, right: 8, bottom: 40, left: 10},
+    margin = {top: 30, right: 8, bottom: 40, left: 12},
     width = svg.attr("width") - margin.left - margin.right,
     height = svg.attr("height") - margin.top - margin.bottom;
 
@@ -536,7 +536,17 @@ var data = [{
 
     axis = d3.select(".axis");
 
-    axis.attr("stroke", "black");
+    labels = axis.selectAll("text"); 
+
+    labels.each(function (d,i)
+      {
+        d3.interval(function(){
+        // return d3.select(this).attr("stroke", "black");
+        // transition().delay(300).duration(1500).
+      }
+        , 500)
+      });
+
 
 
 
